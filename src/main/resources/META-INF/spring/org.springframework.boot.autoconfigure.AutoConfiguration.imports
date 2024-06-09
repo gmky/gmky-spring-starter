@@ -1,0 +1,5 @@
+gmky.core.GmkyCoreConfiguration
+gmky.core.config.OpenAPIConfiguration
+gmky.core.config.AuditEntityConfiguration
+gmky.core.config.LoggingAspectConfiguration
+gmky.core.config.SecurityConfiguration
