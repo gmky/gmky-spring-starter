@@ -1,0 +1,275 @@
+openapi: 3.0.3
+info: 
+  title: Codebase API Docs
+  version: 1.0.0
+  description: Codebase API Docs
+tags:
+  - name: Privilege
+    description: Privilege API
+paths:
+  /client-api/v1/roles:
+    post:
+      operationId: createRole
+      tags:
+        - Role
+      summary: Create role
+      description: Create new role
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoleReq'
+      responses:
+        200:
+          description: Created role detail
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml/#/components/schemas/RoleDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/roles/{roleId}/attach-pg:
+    patch:
+      description: Attach privilege group to role
+      operationId: attachPrivilegeGroup
+      summary: Attach privilege group to role
+      tags:
+        - Role
+      parameters:
+        - in: path
+          name: roleId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+      responses:
+        200:
+          description: Attach privilege group successfully
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml/#/components/schemas/RoleDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/roles/{roleId}/detach-pg:
+    patch:
+      description: Detach privilege group from role
+      operationId: detachPrivilegeGroup
+      summary: Detach privilege group from role
+      tags:
+        - Role
+      parameters:
+        - in: path
+          name: roleId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+      responses:
+        200:
+          description: Detach privilege group successfully
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml/#/components/schemas/RoleDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/roles/filter:
+    post:
+      operationId: filter
+      tags:
+        - Role
+      summary: Filter role
+      description: Filter role
+      parameters:
+        - in: query
+          name: pageable
+          required: false
+          schema:
+            $ref: './shared.yaml/#/components/schemas/Pageable'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterRoleReq'
+      responses:
+        200:
+          description: List of role with pagination
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared.yaml/#/components/schemas/RoleDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/roles/{roleId}:
+    get:
+      operationId: getRoleById
+      tags:
+        - Role
+      summary: Get role by ID
+      description: Get role by ID
+      parameters:
+        - in: path
+          name: roleId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Role detail
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml/#/components/schemas/RoleDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/roles/{roleId}/deactivate:
+    put:
+      operationId: deactivateRoleById
+      tags:
+        - Role
+      summary: Deactivate role By ID
+      description: Deactivate role by ID
+      parameters:
+        - in: path
+          required: true
+          name: roleId
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Deactivate successfully
+          content:
+            application/json: { }
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/roles/{roleId}/privilege-group:
+    get:
+      operationId: getPrivilegeGroupOfRoleByRoleId
+      tags:
+        - Role
+      summary: Get privilege group of role by role ID
+      description: Get privilege group of role by role ID
+      parameters:
+        - in: path
+          name: roleId
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: pageable
+          required: false
+          schema:
+            $ref: './shared.yaml/#/components/schemas/Pageable'
+      responses:
+        200:
+          description: List privileges with pagination
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared.yaml/#/components/schemas/PrivilegeGroupDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+components:
+  schemas:
+    FilterRoleReq:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          $ref: './shared.yaml/#/components/schemas/RoleStatusEnum'
+    CreateRoleReq:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        parentId:
+          type: integer
+          format: int64
+        pgIds:
+          type: array
+          items:
+            type: integer
+            format: int64

@@ -18,6 +18,7 @@
 		<springdoc.openapi.version>2.2.0</springdoc.openapi.version>
 		<apache.common.version>3.14.0</apache.common.version>
 		<jwt.version>0.12.3</jwt.version>
+		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -115,6 +116,75 @@
 			<version>${jwt.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${springdoc.openapi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>7.4.0</version>
+				<executions>
+					<execution>
+						<id>auth-rest</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<phase>generate-sources</phase>
+						<configuration>
+							<inputSpecRootDirectory>${project.basedir}/src/main/resources/gmky/specs</inputSpecRootDirectory>
+							<apiPackage>gmky.core.api</apiPackage>
+							<modelPackage>gmky.core.api.model</modelPackage>
+							<generatorName>spring</generatorName>
+							<importMappings>
+								<importMappings>ActionEnum=gmky.core.enumeration.ActionEnum</importMappings>
+								<importMappings>ResourceCodeEnum=gmky.core.enumeration.ResourceCodeEnum</importMappings>
+								<importMappings>UserStatusEnum=gmky.core.enumeration.UserStatusEnum</importMappings>
+								<importMappings>RoleStatusEnum=gmky.core.enumeration.RoleStatusEnum</importMappings>
+								<importMappings>BadRequestException=gmky.core.errors.BadRequestException</importMappings>
+								<importMappings>NotFoundException=gmky.core.errors.NotFoundException</importMappings>
+								<importMappings>UnauthorizedException=gmky.core.errors.UnauthorizedException</importMappings>
+								<importMappings>ForbiddenException=gmky.core.errors.ForbiddenException</importMappings>
+								<importMappings>InternalServerException=gmky.core.errors.InternalServerException</importMappings>
+								<importMappings>Pageable=org.springframework.data.domain.Pageable</importMappings>
+								<importMappings>Resource=org.springframework.core.io.Resource</importMappings>
+							</importMappings>
+							<configOptions>
+								<useTags>true</useTags>
+								<useJakartaEe>true</useJakartaEe>
+								<interfaceOnly>true</interfaceOnly>
+								<skipDefaultInterface>true</skipDefaultInterface>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

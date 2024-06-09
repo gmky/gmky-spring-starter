@@ -1,0 +1,159 @@
+openapi: 3.0.3
+info:
+    title: Codebase API Docs
+    version: 1.0.0
+    description: Codebase API Docs
+tags:
+  - name: Metadata
+    description: Metadata API
+paths:
+  /client-api/v1/metadata/user-status:
+    get:
+      tags:
+        - Metadata
+      description: Get user status
+      operationId: getUserStatus
+      responses:
+        200:
+          description: User status
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared.yaml/#/components/schemas/UserStatusEnum'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/metadata/resource-code:
+    get:
+      tags:
+          - Metadata
+      description: Get resource code
+      operationId: getResourceCode
+      responses:
+        200:
+          description: Resource code
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared.yaml/#/components/schemas/ResourceCodeEnum'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/metadata/action:
+    get:
+      tags:
+          - Metadata
+      description: Get action
+      operationId: getAction
+      responses:
+        200:
+          description: Action
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared.yaml/#/components/schemas/ActionEnum'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/metadata/role-status:
+    get:
+      tags:
+          - Metadata
+      description: Get role status
+      operationId: getRoleStatus
+      responses:
+        200:
+          description: Role status
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared.yaml/#/components/schemas/RoleStatusEnum'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/metadata/role-type:
+    get:
+      tags:
+          - Metadata
+      description: Get role type
+      operationId: getRoleType
+      responses:
+        200:
+          description: Role type
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared.yaml/#/components/schemas/RoleTypeEnum'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/metadata/privilege-group-type:
+    get:
+      tags:
+          - Metadata
+      description: Get privilege group type
+      operationId: getPrivilegeGroupType
+      responses:
+        200:
+          description: Privilege group type
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared.yaml/#/components/schemas/PrivilegeGroupTypeEnum'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'

@@ -1,0 +1,184 @@
+openapi: 3.0.3
+info:
+  title: Codebase API Docs
+  version: 1.0.0
+  description: Codebase API Docs
+paths: {}
+components:
+  parameters: {}
+  schemas:
+    HttpException:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+    Pageable:
+      type: object
+      properties:
+        page:
+          type: integer
+        size:
+          type: integer
+    Resource:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    UserStatusEnum:
+      type: string
+      enum:
+        - ACTIVE
+        - DELETED
+        - BANNED
+        - PENDING
+    RoleStatusEnum:
+      type: string
+      enum:
+        - ACTIVE
+        - DEACTIVATED
+    ResourceCodeEnum:
+      type: string
+      enum:
+        - ROLE
+        - USER
+        - PRIVILEGE
+    ActionEnum:
+      type: string
+      enum:
+        - CREATE
+        - VIEW
+        - EDIT
+        - DELETE
+    UserDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        fullName:
+          type: string
+        email:
+          type: string
+        status:
+          $ref: '#/components/schemas/UserStatusEnum'
+        expireAt:
+          type: string
+          format: date-time
+        deletedAt:
+          type: string
+          format: date-time
+        deletedBy:
+          type: string
+    PrivilegeDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        resourceCode:
+          $ref: '#/components/schemas/ResourceCodeEnum'
+        action:
+          $ref: '#/components/schemas/ActionEnum'
+        description:
+          type: string
+    RoleDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        status:
+          $ref: '#/components/schemas/RoleStatusEnum'
+        description:
+          type: string
+        parentId:
+          type: integer
+          format: int64
+    PrivilegeGroupDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+    RoleTypeEnum:
+      type: string
+      enum:
+        - TEMPLATE
+        - CUSTOM
+    PrivilegeGroupTypeEnum:
+      type: string
+      enum:
+        - TEMPLATE
+        - CUSTOM
+  responses:
+    BadRequestException:
+      description: BadRequestException
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpException'
+          examples:
+            BadRequestException:
+              value:
+                status: 400
+                code: BAD_REQUEST
+                message: Bad Request Exception
+    NotFoundException:
+      description: NotFoundException
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpException'
+          examples:
+            NotFoundException:
+              value:
+                status: 404
+                code: NOT_FOUND
+                message: Not Found Exception
+    UnauthorizedException:
+      description: UnauthorizedException
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpException'
+          examples:
+            UnauthorizedException:
+              value:
+                status: 401
+                code: UNAUTHORIZED
+                message: Unauthorized Exception
+    ForbiddenException:
+      description: ForbiddenException
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpException'
+          examples:
+            ForbiddenException:
+              value:
+                status: 401
+                code: FORBIDDEN
+                message: Forbidden Exception
+    InternalServerException:
+      description: InternalServerException
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpException'
+          examples:
+            InternalServerException:
+              value:
+                status: 500
+                code: INTERNAL_SERVER_EXCEPTION
+                message: Internal Server Exception

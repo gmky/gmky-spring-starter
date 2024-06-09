@@ -1,0 +1,282 @@
+openapi: 3.0.0
+info:
+  title: User API Docs
+  version: 1.0.0
+  description: User API Docs
+tags:
+  - name: User
+    description: User API
+paths:
+  /client-api/v1/users/filter:
+    post:
+      operationId: filterUser
+      tags:
+        - User
+      description: Filter with pagination
+      summary: Filter with pagination
+      parameters:
+        - in: query
+          name: pageable
+          required: false
+          schema:
+            $ref: './shared.yaml/#/components/schemas/Pageable'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterUserReq'
+      responses:
+        200:
+          description: User detail
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared.yaml/#/components/schemas/UserDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/users/{userId}:
+    get:
+      operationId: getUserById
+      tags:
+        - User
+      description: Get user detail by user ID
+      summary: Get user detail by user ID
+      parameters:
+        - in: path
+          name: userId
+          description: ID of user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: User detail
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml/#/components/schemas/UserDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+    put:
+      summary: Update user by ID
+      description: Update user by ID
+      operationId: updateUser
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserReq'
+      responses:
+        200:
+          description: Update user successfully
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml/#/components/schemas/UserDTO'
+    delete:
+      operationId: deleteUserById
+      tags:
+        - User
+      description: Delete user by ID
+      summary: Delete user by ID
+      parameters:
+        - in: path
+          name: userId
+          description: ID of user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Delete successfully
+          content:
+            application/json: { }
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/users/{userId}/attach-roles:
+    patch:
+      operationId: attachRoles
+      tags:
+        - User
+      summary: Attach roles to user
+      description: Attach roles to user
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+      responses:
+        200:
+          description: Attach roles successfully
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml/#/components/schemas/UserDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/users/{userId}/detach-roles:
+    patch:
+      summary: Detach role from user
+      description: Detach roles from user
+      operationId: detachRoles
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+      responses:
+        200:
+          description: Detach roles successfully
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml/#/components/schemas/UserDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/users/{userId}/change-password:
+    patch:
+      operationId: changePasswordById
+      tags:
+        - User
+      summary: Change user password by ID
+      description: Change user password by ID
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordReq'
+      responses:
+        200:
+          description: Change password successfully
+          content:
+            application/json: { }
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+components:
+  schemas:
+    FilterUserReq:
+      type: object
+      properties:
+        statuses:
+          type: array
+          items:
+            $ref: './shared.yaml/#/components/schemas/UserStatusEnum'
+        username:
+          type: string
+        fullName:
+          type: string
+    ChangePasswordReq:
+      type: object
+      properties:
+        currentPassword:
+          type: string
+          format: password
+        newPassword:
+          type: string
+          format: password
+    UpdateUserReq:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        fullName:
+          type: string
+        status:
+          $ref: './shared.yaml/#/components/schemas/UserStatusEnum'
+        expiredAt:
+          type: string
+          format: date-time

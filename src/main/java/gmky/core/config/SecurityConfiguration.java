@@ -2,8 +2,8 @@ package gmky.core.config;
 
 import gmky.core.GmkyCoreConfiguration;
 import gmky.core.GmkyCoreProperties;
-import gmky.core.security.JwtFilter;
-import gmky.core.security.TokenProvider;
+import gmky.core.repository.UserRepository;
+import gmky.core.security.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -35,9 +36,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @ConditionalOnBean(GmkyCoreConfiguration.class)
 @ConditionalOnProperty(name = "gmky.security.enabled", havingValue = "true")
 public class SecurityConfiguration {
-    private final UserDetailsService userDetailsService;
-    private final TokenProvider tokenProvider;
     private final GmkyCoreProperties properties;
+    private final UserRepository userRepository;
 
     @Bean
     @ConditionalOnMissingBean
@@ -62,8 +62,10 @@ public class SecurityConfiguration {
                     }
                     httpReq
                             .requestMatchers("/error").permitAll()
-                            .requestMatchers("/api-docs/**").permitAll()
+                            .requestMatchers("/v3/api-docs/**").permitAll()
                             .requestMatchers("/swagger-ui/**").permitAll()
+                            .requestMatchers("/client-api/v1/auth/login").permitAll()
+                            .requestMatchers("/client-api/v1/forgot-password").permitAll()
                             .anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -76,7 +78,7 @@ public class SecurityConfiguration {
         log.info("Initializing authentication provider");
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(userDetailsService);
+        provider.setUserDetailsService(userDetailsService());
         return provider;
     }
 
@@ -91,6 +93,23 @@ public class SecurityConfiguration {
     @ConditionalOnMissingBean
     public JwtFilter jwtFilter() {
         log.info("Initializing JWT filter");
-        return new JwtFilter(tokenProvider);
+        return new JwtFilter(tokenProvider());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public TokenProvider tokenProvider() {
+        return new TokenProviderImpl(userDetailsService());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public MethodSecurityExpressionHandler expressionHandler() {
+        return new CustomMethodSecurityExpressionHandler(userRepository);
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new CustomUserDetailsService(userRepository);
     }
 }

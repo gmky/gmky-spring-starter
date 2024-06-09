@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <property dbms="mysql,mariadb" name="varchar" value="varchar" />
+    <changeSet id="20240217-create-users-table-01" author="codebase">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="USERS" />
+            </not>
+        </preConditions>
+        <createTable tableName="USERS">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="USERNAME" type="${varchar}(50)">
+                <constraints unique="true" nullable="false" />
+            </column>
+            <column name="EMAIL" type="${varchar}(255)">
+                <constraints unique="true" nullable="false" />
+            </column>
+            <column name="PASSWORD" type="${varchar}(1000)">
+                <constraints nullable="false" />
+            </column>
+            <column name="FULL_NAME" type="nvarchar2(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="STATUS" type="${varchar}(10)" defaultValue="PENDING">
+                <constraints nullable="false" />
+            </column>
+            <column name="IS_ADMIN" type="boolean" defaultValue="false">
+                <constraints nullable="false" />
+            </column>
+            <column name="EXPIRE_AT" type="timestamp(6)">
+                <constraints nullable="true" />
+            </column>
+            <column name="DELETED_BY" type="${varchar}(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="DELETED_AT" type="timestamp(6)">
+                <constraints nullable="true" />
+            </column>
+            <column name="CREATED_BY" type="${varchar}(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_AT" type="timestamp(6)">
+                <constraints nullable="false" />
+            </column>
+            <column name="UPDATED_BY" type="${varchar}(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="UPDATED_AT" type="timestamp(6)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="20240217-create-roles-table-02" author="codebase">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="ROLES" />
+            </not>
+        </preConditions>
+        <createTable tableName="ROLES">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="PARENT_ID" type="bigint">
+                <constraints nullable="true" foreignKeyName="ROLES_PARENT_ID_FK" referencedTableName="ROLES" referencedColumnNames="ID" />
+            </column>
+            <column name="NAME" type="${varchar}(50)">
+                <constraints unique="true" />
+            </column>
+            <column name="ROLE_TYPE" type="${varchar}(10)">
+                <constraints nullable="false" />
+            </column>
+            <column name="STATUS" type="${varchar}(10)" defaultValue="ACTIVE">
+                <constraints nullable="false" />
+            </column>
+            <column name="DESCRIPTION" type="nvarchar2(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="DEACTIVATED_BY" type="${varchar}(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="DEACTIVATED_AT" type="timestamp(6)">
+                <constraints nullable="true" />
+            </column>
+            <column name="CREATED_BY" type="${varchar}(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_AT" type="timestamp(6)">
+                <constraints nullable="false" />
+            </column>
+            <column name="UPDATED_BY" type="${varchar}(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="UPDATED_AT" type="timestamp(6)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="20240217-create-privileges-table-03" author="codebase">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PRIVILEGES" />
+            </not>
+        </preConditions>
+        <createTable tableName="PRIVILEGES">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="RESOURCE_CODE" type="${varchar}(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="ACTION" type="${varchar}(15)">
+                <constraints nullable="false" />
+            </column>
+            <column name="DESCRIPTION" type="nvarchar2(1000)">
+                <constraints nullable="true" />
+            </column>
+            <column name="CREATED_BY" type="${varchar}(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_AT" type="timestamp(6)">
+                <constraints nullable="false" />
+            </column>
+            <column name="UPDATED_BY" type="${varchar}(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="UPDATED_AT" type="timestamp(6)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="20240217-create-privilege-group-table-04" author="codebase">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="PRIVILEGE_GROUP" />
+            </not>
+        </preConditions>
+        <createTable tableName="PRIVILEGE_GROUP">
+            <column name="ID" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="NAME" type="nvarchar2(255)">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="PG_TYPE" type="${varchar}(10)">
+                <constraints nullable="false" />
+            </column>
+            <column name="DESCRIPTION" type="nvarchar2(1000)">
+                <constraints nullable="true" />
+            </column>
+            <column name="CREATED_BY" type="${varchar}(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_AT" type="timestamp(6)">
+                <constraints nullable="false" />
+            </column>
+            <column name="UPDATED_BY" type="${varchar}(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="UPDATED_AT" type="timestamp(6)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="20240217-create-role-user-table-05" author="codebase">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="USERS"/>
+                <tableExists tableName="ROLES" />
+            </and>
+        </preConditions>
+        <createTable tableName="ROLE_USER">
+            <column name="ROLE_ID" type="bigint">
+                <constraints nullable="false" foreignKeyName="ROLE_USER_ROLE_ID_FK" referencedTableName="ROLES" referencedColumnNames="ID" />
+            </column>
+            <column name="USER_ID" type="bigint">
+                <constraints nullable="false" foreignKeyName="ROLE_USER_USER_ID_FK" referencedTableName="USERS" referencedColumnNames="ID" />
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="ROLE_USER" columnNames="ROLE_ID,USER_ID" />
+    </changeSet>
+    <changeSet id="20240217-create-pg-role-table-06" author="codebase">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="ROLES" />
+                <tableExists tableName="PRIVILEGE_GROUP" />
+            </and>
+        </preConditions>
+        <createTable tableName="PG_ROLE">
+            <column name="PG_ID" type="bigint">
+                <constraints nullable="false" foreignKeyName="PG_ROLE_PG_ID_FK" referencedTableName="PRIVILEGE_GROUP" referencedColumnNames="ID" />
+            </column>
+            <column name="ROLE_ID" type="bigint">
+                <constraints nullable="false" foreignKeyName="PG_ROLE_ROLE_ID_FK" referencedTableName="ROLES" referencedColumnNames="ID" />
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="PG_ROLE" columnNames="PG_ID,ROLE_ID" />
+    </changeSet>
+    <changeSet id="20240217-create-pg-item-table-07" author="codebase">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <tableExists tableName="PRIVILEGE_GROUP" />
+                <tableExists tableName="PRIVILEGES" />
+            </and>
+        </preConditions>
+        <createTable tableName="PG_ITEM">
+            <column name="PG_ID" type="bigint">
+                <constraints nullable="false" foreignKeyName="PG_ITEM_PG_ID_FK" referencedTableName="PRIVILEGE_GROUP" referencedColumnNames="ID" />
+            </column>
+            <column name="PRIVILEGE_ID" type="bigint">
+                <constraints nullable="false" foreignKeyName="PG_ITEM_PRIVILEGE_ID_FK" referencedTableName="PRIVILEGES" referencedColumnNames="ID" />
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="PG_ITEM" columnNames="PG_ID,PRIVILEGE_ID" />
+    </changeSet>
+
+    <changeSet id="20240217-insert-data-privileges-table-08" author="codebase">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="PRIVILEGES" />
+        </preConditions>
+        <sqlFile path="gmky/db/sql/privilege-init-data.sql" />
+    </changeSet>
+    <changeSet id="20240217-insert-data-privilege-group-table-09" author="codebase">
+        <preConditions>
+            <changeSetExecuted id="20240217-insert-data-privileges-table-08" author="codebase" changeLogFile="gmky/db/changelog/20240217-initialization.xml" />
+        </preConditions>
+        <sqlFile path="gmky/db/sql/privilege-group-init-data.sql" />
+    </changeSet>
+    <changeSet id="20240217-insert-data-roles-table-10" author="codebase">
+        <preConditions>
+            <changeSetExecuted id="20240217-insert-data-privilege-group-table-09" author="codebase" changeLogFile="gmky/db/changelog/20240217-initialization.xml" />
+        </preConditions>
+        <sqlFile path="gmky/db/sql/role-init-data.sql" />
+    </changeSet>
+    <changeSet id="20240217-insert-data-users-table-11" author="codebase">
+        <preConditions>
+            <changeSetExecuted id="20240217-insert-data-roles-table-10" author="codebase" changeLogFile="gmky/db/changelog/20240217-initialization.xml" />
+        </preConditions>
+        <sqlFile path="gmky/db/sql/user-init-data.sql" />
+    </changeSet>
+</databaseChangeLog>

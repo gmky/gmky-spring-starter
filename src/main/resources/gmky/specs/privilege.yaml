@@ -1,0 +1,82 @@
+openapi: 3.0.3
+info: 
+  title: Codebase API Docs
+  version: 1.0.0
+  description: Codebase API Docs
+tags:
+  - name: Privilege
+    description: Privilege API
+paths:
+  /client-api/v1/privileges/search:
+    get:
+      operationId: searchPrivileges
+      tags:
+        - Privilege
+      summary: Search privileges
+      description: Search privileges with pagination
+      parameters:
+        - in: query
+          name: action
+          required: false
+          schema:
+            $ref: './shared.yaml/#/components/schemas/ActionEnum'
+        - in: query
+          name: resourceCode
+          required: false
+          schema:
+            $ref: './shared.yaml/#/components/schemas/ResourceCodeEnum'
+        - in: query
+          name: pageable
+          required: false
+          schema:
+            $ref: './shared.yaml/#/components/schemas/Pageable'
+      responses:
+        200:
+          description: List privileges with pagination
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared.yaml/#/components/schemas/PrivilegeDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/privileges/{privilegeId}:
+    get:
+      operationId: getPrivilegeById
+      tags:
+        - Privilege
+      summary: Get privilege by ID
+      description: Get privilege by ID
+      parameters:
+        - in: path
+          name: privilegeId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Privilege detail
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml/#/components/schemas/PrivilegeDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'

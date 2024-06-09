@@ -18,6 +18,7 @@ public class GmkyCoreProperties {
     private Auditor auditor;
     private Logging logging;
     private Security security;
+    private Liquibase liquibase;
 
     @Getter
     @Setter
@@ -48,6 +49,15 @@ public class GmkyCoreProperties {
     public static class Security {
         private boolean enabled;
         private List<String> publicPaths = new ArrayList<>();
+        private String secret;
+        private Long expiration;
+    }
+
+    @Getter
+    @Setter
+    public static class Liquibase {
+        private boolean enabled;
+        private String changeLog;
     }
 
 

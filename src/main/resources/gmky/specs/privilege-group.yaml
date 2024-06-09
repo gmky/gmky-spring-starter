@@ -1,0 +1,236 @@
+openapi: 3.0.3
+info: 
+  title: Codebase API Docs
+  version: 1.0.0
+  description: Codebase API Docs
+tags:
+  - name: Privilege Group
+    description: Privilege Group API
+paths:
+  /client-api/v1/privilege-group:
+    post:
+      operationId: createPrivilegeGroup
+      tags:
+        - Privilege Group
+      summary: Create new privilege group
+      description: Create new privilege group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePrivilegeGroupReq'
+      responses:
+        200:
+          description: Created privilege group detail
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml/#/components/schemas/PrivilegeGroupDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/privilege-group/search:
+    get:
+      operationId: searchPrivilegeGroup
+      tags:
+        - Privilege Group
+      summary: Search privilege group
+      description: Search privilege group
+      parameters:
+        - in: query
+          name: name
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: pageable
+          required: false
+          schema:
+            $ref: './shared.yaml/#/components/schemas/Pageable'
+      responses:
+        200:
+          description: List privilege group with pagination
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared.yaml/#/components/schemas/PrivilegeGroupDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/privilege-group/{pgId}:
+    get:
+      operationId: getPGById
+      tags:
+        - Privilege Group
+      summary: Get privilege group by ID
+      description: Get privilege group by ID
+      parameters:
+        - in: path
+          name: pgId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Privilege group detail
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml/#/components/schemas/PrivilegeGroupDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/privilege-group/{pgId}/attach-privilege:
+    patch:
+      summary: Attach privileges to privilege group
+      description: Attach privileges to privilege group
+      operationId: attachPrivilege
+      tags:
+        - Privilege Group
+      parameters:
+        - in: path
+          name: pgId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+      responses:
+        200:
+          description: Attach privilege successfully
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml/#/components/schemas/PrivilegeGroupDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/privilege-group/{pgId}/detach-privilege:
+    patch:
+      summary: Detach privileges to privilege group
+      description: Detach privileges to privilege group
+      operationId: detachPrivilege
+      tags:
+        - Privilege Group
+      parameters:
+        - in: path
+          name: pgId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+      responses:
+        200:
+          description: Detach privilege successfully
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml/#/components/schemas/PrivilegeGroupDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+  /client-api/v1/privilege-group/{pgId}/privileges:
+    get:
+      operationId: getPrivilegeByPGId
+      tags:
+        - Privilege Group
+      summary: Get privileges by pg ID
+      description: Get privileges by privilege group ID
+      parameters:
+        - in: path
+          name: pgId
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: query
+          name: pageable
+          required: false
+          schema:
+            $ref: './shared.yaml/#/components/schemas/Pageable'
+      responses:
+        200:
+          description: List privileges with pagination
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './shared.yaml/#/components/schemas/PrivilegeDTO'
+        400:
+          $ref: './shared.yaml/#/components/responses/BadRequestException'
+        401:
+          $ref: './shared.yaml/#/components/responses/UnauthorizedException'
+        403:
+          $ref: './shared.yaml/#/components/responses/ForbiddenException'
+        404:
+          $ref: './shared.yaml/#/components/responses/NotFoundException'
+        500:
+          $ref: './shared.yaml/#/components/responses/InternalServerException'
+components: 
+  schemas:
+    CreatePrivilegeGroupReq:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        privilegeIds:
+          type: array
+          items:
+            type: integer
+            format: int64

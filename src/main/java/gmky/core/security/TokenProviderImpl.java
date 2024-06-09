@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,11 +17,14 @@ import java.util.function.Function;
 
 @RequiredArgsConstructor
 public class TokenProviderImpl implements TokenProvider {
-    private final String base64Secret;
+    @Value("${gmky.security.secret}")
+    private String base64Secret;
 
-    private final long defaultExpireInSeconds;
+    @Value("${gmky.security.expiration}")
+    private long defaultExpireInSeconds;
 
-    private final String applicationName;
+    @Value("${spring.application.name}")
+    private String applicationName;
 
     private final UserDetailsService userDetailsService;
 
