@@ -4,5 +4,7 @@ public enum ResourceCodeEnum {
     USER,
     ROLE,
     PRIVILEGE,
-    PRIVILEGE_GROUP
+    PRIVILEGE_GROUP,
+    ACTION,
+    RESOURCE;
 }

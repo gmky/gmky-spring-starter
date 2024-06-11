@@ -59,7 +59,7 @@ paths:
           $ref: './shared.yaml/#/components/responses/NotFoundException'
         500:
           $ref: './shared.yaml/#/components/responses/InternalServerException'
-  /client-api/auth/summary:
+  /client-api/v1/auth/summary:
     get:
       summary: Get current user summary
       description: Get current user summary
